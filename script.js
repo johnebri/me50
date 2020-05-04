@@ -11,6 +11,9 @@ const uncheckedCountSpan = document.getElementById('unchecked-count')
 
 let todos = []
 let id = 0;
+
+updateTodos(); 
+
 function newTodo() {
   const todoName = prompt('Enter Todo Here')
   if(todoName !== '') {
@@ -31,19 +34,24 @@ function newTodo() {
 function updateTodos() {
 
   list.textContent = ''
-  todos.map(todo => {
-    const listItem = document.createElement('li')
-    listItem.setAttribute('class', 'todo-list')
-
-    listItem.innerHTML = `
-      <input type="checkbox" class='todo-checkbox' onchange=toggle(${todo.id}) ${todo.isDone ? 'checked' : '' } />
-      <span>${todo.todo}</span>
-      <button onclick=removeTodo(${todo.id}) class='todo-delete'>Delete Todo</button>
-    `  
-    
-    const mainNode = list.appendChild(listItem)
-    list.appendChild(mainNode)
-  })
+  if(todos.length > 0) {
+    todos.map(todo => {
+      const listItem = document.createElement('li')
+      listItem.setAttribute('class', 'todo-list')
+  
+      listItem.innerHTML = `
+        <input type="checkbox" class='todo-checkbox' onchange=toggle(${todo.id}) ${todo.isDone ? 'checked' : '' } />
+        <span>${todo.todo}</span>
+        <button onclick=removeTodo(${todo.id}) class='todo-delete'>Delete Todo</button>
+      `  
+      
+      const mainNode = list.appendChild(listItem)
+      list.appendChild(mainNode)
+    })
+  } else {
+    list.textContent = 'There are no todos to show'
+  }
+  
 
   itemCountSpan.textContent = countTodos();
   uncheckedCountSpan.textContent = uncheckedTodos()
